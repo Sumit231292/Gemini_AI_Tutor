@@ -1,5 +1,5 @@
 """
-Configuration for GeminiTutor backend.
+Configuration for EduNova backend.
 Loads settings from environment variables.
 """
 

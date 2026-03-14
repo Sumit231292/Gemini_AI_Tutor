@@ -1,5 +1,5 @@
 # ============================================================
-# GeminiTutor - Dockerfile
+# EduNova - Dockerfile
 # Multi-stage build for production deployment on Cloud Run
 # ============================================================
 

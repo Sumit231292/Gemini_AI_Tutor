@@ -18,14 +18,18 @@ from .config import settings
 logger = logging.getLogger(__name__)
 
 # System instruction for the AI tutor
-TUTOR_SYSTEM_INSTRUCTION = """You are GeminiTutor, a friendly AI tutor.
+TUTOR_SYSTEM_INSTRUCTION = """You are EduNova, a friendly AI tutor.
 
 Rules:
-- Use the Socratic method: guide students to answers, don't give solutions directly.
+- LISTEN CAREFULLY to what the student is actually asking. Identify the exact type of problem (arithmetic, algebra, geometry, calculus, etc.) before responding. Do NOT misclassify questions — for example, "what is 2+2" is basic arithmetic, NOT geometry.
+- Use a balanced teaching approach:
+  * For simple/direct questions (facts, definitions, basic calculations): Give the answer clearly, then briefly explain why.
+  * For complex problems (multi-step, homework): First ask what they've tried, give a hint, then if they're still stuck after 1-2 exchanges, walk them through the solution step by step and give the final answer.
+  * NEVER endlessly loop giving only hints without ever providing the answer. After guiding once or twice, provide the complete solution with explanation.
 - Be encouraging and patient. Use analogies and real-world examples.
 - Keep voice responses SHORT — 1-3 sentences at a time. Be concise.
-- When shown homework (image), identify the topic, ask what they've tried, then guide step-by-step.
-- Speak naturally and conversationally. Verbalize math clearly.
+- When shown homework (image), carefully read the problem, identify the EXACT subject and topic, then help solve it.
+- Speak naturally and conversationally. Verbalize math clearly (e.g., say "2 plus 2 equals 4").
 - Handle interruptions gracefully.
 - IMPORTANT: You MUST always respond in {language}. All your spoken and text responses must be in {language}. Never switch to a different language unless the student explicitly asks."""
 
@@ -191,26 +195,62 @@ class LiveSession:
             logger.error(f"Error sending audio: {e}")
 
     async def send_image(self, image_data: str, mime_type: str = "image/jpeg") -> None:
-        """Send an image to Gemini Live API (e.g., photo of homework).
-        
+        """Analyze an image using the vision model, then feed the result into the live session.
+
+        The native-audio live model does not support vision, so we use
+        a separate Gemini vision model call and send the analysis as text.
+
         Args:
             image_data: Base64-encoded image data
             mime_type: MIME type of the image
         """
-        if not self._session or not self._active:
+        if not self._active:
             return
 
         try:
             raw_image = base64.b64decode(image_data)
-            await self._session.send_realtime_input(
-                media=types.Blob(
-                    data=raw_image,
-                    mime_type=mime_type,
-                )
+
+            # Use the vision model to analyze the image
+            vision_response = await self._client.aio.models.generate_content(
+                model=settings.gemini_vision_model,
+                contents=[
+                    types.Content(
+                        role="user",
+                        parts=[
+                            types.Part(text=(
+                                "Carefully look at this image. Describe exactly what you see — "
+                                "identify the subject, topic, and any problems or questions shown. "
+                                "Then solve each problem step by step and provide the final answer. "
+                                "Be thorough and precise."
+                            )),
+                            types.Part(inline_data=types.Blob(
+                                data=raw_image,
+                                mime_type=mime_type,
+                            )),
+                        ],
+                    )
+                ],
             )
-            logger.info(f"Image sent to session {self.session_id}")
+
+            analysis = vision_response.text
+            logger.info(f"Vision analysis for session {self.session_id}: {analysis[:100]}...")
+
+            # Send the vision analysis to the live session as context
+            await self.send_text(
+                f"A student just showed me an image. Here is what the image contains:\n\n"
+                f"{analysis}\n\n"
+                f"Based on this, help the student understand and solve the problems. "
+                f"Walk through the solution step by step and give the final answer."
+            )
+
         except Exception as e:
-            logger.error(f"Error sending image: {e}")
+            logger.error(f"Error analyzing image: {e}", exc_info=True)
+            # Fallback: tell the student there was an issue
+            if self._session:
+                await self.send_text(
+                    "I had trouble analyzing your image. Could you please describe "
+                    "the problem or try sending the image again?"
+                )
 
     async def send_text(self, text: str) -> None:
         """Send a text message to Gemini Live API.

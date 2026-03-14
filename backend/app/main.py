@@ -1,5 +1,5 @@
 """
-FastAPI server for GeminiTutor.
+FastAPI server for EduNova.
 Handles WebSocket connections for real-time voice/vision tutoring
 and REST endpoints for image analysis and session management.
 """
@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan manager."""
-    logger.info("🎓 GeminiTutor starting up...")
+    logger.info("🎓 EduNova starting up...")
     try:
         settings.validate()
         logger.info("✅ Configuration validated")
@@ -55,11 +55,11 @@ async def lifespan(app: FastAPI):
     # Shutdown: clean up all sessions
     logger.info("🔄 Shutting down, cleaning up sessions...")
     await session_manager.cleanup_all()
-    logger.info("👋 GeminiTutor stopped")
+    logger.info("👋 EduNova stopped")
 
 
 app = FastAPI(
-    title="GeminiTutor",
+    title="EduNova",
     description="AI-powered tutor using Gemini Live API for real-time voice and vision tutoring",
     version="1.0.0",
     lifespan=lifespan,
@@ -94,7 +94,7 @@ async def root():
     if index_path.exists():
         return HTMLResponse(content=index_path.read_text(encoding="utf-8"))
     return HTMLResponse(
-        content="<h1>GeminiTutor API</h1><p>Frontend not found. Place files in /frontend directory.</p>"
+        content="<h1>EduNova API</h1><p>Frontend not found. Place files in /frontend directory.</p>"
     )
 
 
@@ -103,7 +103,7 @@ async def health_check():
     """Health check endpoint for Cloud Run."""
     return {
         "status": "healthy",
-        "service": "gemini-tutor",
+        "service": "edunova",
         "active_sessions": session_manager.active_count,
     }
 
@@ -307,15 +307,9 @@ async def websocket_tutor(websocket: WebSocket):
                 image_data = message.get("data", "")
                 mime_type = message.get("mime_type", "image/jpeg")
                 if image_data:
+                    # Vision analysis is handled inside send_image
+                    # (uses vision model + feeds result to live session)
                     await session.send_image(image_data, mime_type)
-                    # Also send a text prompt to analyze the image
-                    prompt = message.get(
-                        "prompt",
-                        "I just showed you an image of my homework. "
-                        "Please look at it and help me understand and solve the problems. "
-                        "Don't give me the answers directly - guide me through it step by step.",
-                    )
-                    await session.send_text(prompt)
 
             # ── SEND TEXT ──
             elif msg_type == "text" and session:

@@ -1,1 +1,1 @@
-# GeminiTutor Backend
+# EduNova Backend

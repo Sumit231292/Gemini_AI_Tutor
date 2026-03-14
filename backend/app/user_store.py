@@ -1,5 +1,5 @@
 """
-User profile storage for GeminiTutor.
+User profile storage for EduNova.
 Primary: Google Cloud Firestore (persistent, durable).
 Fallback: Local JSON file (for local dev without Firestore).
 Passwords are hashed with bcrypt before storage.
@@ -51,7 +51,7 @@ USERS_FILE = DATA_DIR / "users.json"
 # ---------------------------------------------------------------------------
 _firestore_db = None
 _firestore_available: Optional[bool] = None
-COLLECTION = "gemini_tutor_users"
+COLLECTION = "edunova_users"
 
 
 def _get_firestore():
