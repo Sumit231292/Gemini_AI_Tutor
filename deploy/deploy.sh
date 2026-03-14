@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# GeminiTutor - Deploy to Google Cloud Run
+# EduNova - Deploy to Google Cloud Run
 # 
 # Usage:
 #   ./deploy.sh [PROJECT_ID] [REGION]
@@ -16,11 +16,11 @@ set -euo pipefail
 # Configuration
 PROJECT_ID="${1:-$(gcloud config get-value project 2>/dev/null)}"
 REGION="${2:-us-central1}"
-SERVICE_NAME="gemini-tutor"
+SERVICE_NAME="edunova"
 IMAGE_NAME="gcr.io/${PROJECT_ID}/${SERVICE_NAME}"
 
 echo "================================================"
-echo "  GeminiTutor - Cloud Run Deployment"
+echo "  EduNova - Cloud Run Deployment"
 echo "================================================"
 echo "  Project:  ${PROJECT_ID}"
 echo "  Region:   ${REGION}"

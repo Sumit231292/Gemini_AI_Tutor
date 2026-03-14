@@ -1,5 +1,5 @@
 # ============================================================
-# GeminiTutor - Terraform Configuration (Bonus: IaC)
+# EduNova - Terraform Configuration (Bonus: IaC)
 # Infrastructure as Code for automated Cloud deployment
 # ============================================================
 
@@ -57,23 +57,23 @@ resource "google_project_service" "apis" {
 }
 
 # ── Artifact Registry Repository ──
-resource "google_artifact_registry_repository" "gemini_tutor" {
+resource "google_artifact_registry_repository" "edunova" {
   location      = var.region
-  repository_id = "gemini-tutor"
+  repository_id = "edunova"
   format        = "DOCKER"
-  description   = "Docker repository for GeminiTutor"
+  description   = "Docker repository for EduNova"
 
   depends_on = [google_project_service.apis]
 }
 
 # ── Cloud Run Service ──
-resource "google_cloud_run_v2_service" "gemini_tutor" {
-  name     = "gemini-tutor"
+resource "google_cloud_run_v2_service" "edunova" {
+  name     = "edunova"
   location = var.region
 
   template {
     containers {
-      image = "gcr.io/${var.project_id}/gemini-tutor:latest"
+      image = "gcr.io/${var.project_id}/edunova:latest"
 
       ports {
         container_port = 8080
@@ -127,7 +127,7 @@ resource "google_cloud_run_v2_service" "gemini_tutor" {
 resource "google_cloud_run_v2_service_iam_member" "public" {
   project  = var.project_id
   location = var.region
-  name     = google_cloud_run_v2_service.gemini_tutor.name
+  name     = google_cloud_run_v2_service.edunova.name
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
@@ -135,7 +135,7 @@ resource "google_cloud_run_v2_service_iam_member" "public" {
 # ── Outputs ──
 output "service_url" {
   description = "The URL of the deployed Cloud Run service"
-  value       = google_cloud_run_v2_service.gemini_tutor.uri
+  value       = google_cloud_run_v2_service.edunova.uri
 }
 
 output "project_id" {

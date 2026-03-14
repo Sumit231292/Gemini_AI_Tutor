@@ -1,4 +1,4 @@
-# 🎓 GeminiTutor — AI Tutor That Sees & Speaks
+# 🎓 EduNova — AI Tutor That Sees & Speaks
 
 > **Real-time, vision-enabled AI tutor** powered by Google Gemini Live API.  
 > Talk naturally, show your homework, and get step-by-step guidance.
@@ -11,9 +11,9 @@
 
 | Feature | Description |
 |---|---|
-| 🗣️ **Real-time Voice** | Natural conversation with your tutor — speak and get spoken responses via Gemini Live API |
-| 📸 **Vision-Enabled** | Show your homework via camera or upload an image — the tutor "sees" and helps |
-| 🧠 **Socratic Method** | Guides you to discover answers yourself instead of just giving solutions |
+| 🗣️ **Real-time Voice** | Natural conversation with your tutor — speak and get spoken responses via Gemini Live API (native audio) |
+| 📸 **Vision-Enabled** | Show your homework via camera or upload an image — analyzed by Gemini 2.5 Flash vision model |
+| 🧠 **Balanced Teaching** | Guides you to understand concepts, then provides complete solutions with step-by-step explanations |
 | ⚡ **Interruptible** | Break in at any time — the tutor handles interruptions gracefully |
 | 🌐 **Language Selection** | Choose from 20+ languages (English, Hindi, Spanish, French, etc.) — the tutor responds in your preferred language |
 | 📚 **Multi-Subject** | Mathematics, Physics, Chemistry, Biology, CS, Language Arts, History |
@@ -59,10 +59,10 @@
 ┌────────────┼─────────────────────────────────────────────┐
 │            ▼                                             │
 │  ┌──────────────────────────────────────────────────┐   │
-│  │         Gemini Live API (2.0 Flash)              │   │
-│  │  • Real-time audio input/output                  │   │
-│  │  • Image/vision understanding                    │   │
-│  │  • Multimodal reasoning                          │   │
+│  │         Gemini 2.5 Flash (Native Audio + Vision)  │   │
+│  │  • Real-time audio input/output (native audio)   │   │
+│  │  • Image/vision understanding (2.5 Flash vision) │   │
+│  │  • Hybrid: voice via Live API, vision via API    │   │
 │  │  • Interruption handling                         │   │
 │  └──────────────────────────────────────────────────┘   │
 │                                                          │
@@ -76,9 +76,9 @@
 
 | Layer | Technology |
 |---|---|
-| **AI Model** | Gemini 2.0 Flash (Live API) |
+| **AI Models** | Gemini 2.5 Flash Native Audio (Live API — voice) + Gemini 2.5 Flash (vision/image analysis) |
 | **Agent Framework** | Google ADK (Agent Development Kit) |
-| **SDK** | Google GenAI SDK (`google-genai`) |
+| **SDK** | Google GenAI SDK (`google-genai` v1.x) |
 | **Backend** | Python 3.12, FastAPI, uvicorn, WebSockets |
 | **Database** | Google Cloud Firestore (user profiles & session data) |
 | **Frontend** | Vanilla HTML/CSS/JS (no build step) |
@@ -99,8 +99,8 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/gemini-tutor.git
-cd gemini-tutor
+git clone https://github.com/YOUR_USERNAME/edunova.git
+cd edunova
 ```
 
 ### 2. Set Up Environment
@@ -199,7 +199,7 @@ terraform apply -var="project_id=YOUR_PROJECT_ID"
 After deployment, set your API key:
 
 ```bash
-gcloud run services update gemini-tutor \
+gcloud run services update edunova \
     --region us-central1 \
     --set-env-vars GOOGLE_API_KEY=your-api-key
 ```
@@ -209,7 +209,7 @@ gcloud run services update gemini-tutor \
 ## 📁 Project Structure
 
 ```
-gemini-tutor/
+edunova/
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py          # Package init
@@ -243,7 +243,7 @@ gemini-tutor/
 5. **Show your homework** — use the camera button to capture a photo, or upload an image
 6. **Type messages** — use the text input for typed questions
 7. **Change language** — switch language anytime from the landing page
-8. **Get guided** — the tutor uses Socratic method to help you understand, not just get answers
+8. **Get guided** — the tutor explains concepts step-by-step and gives you the final answer
 9. **Interrupt anytime** — the tutor handles interruptions gracefully
 10. **Log out** — click the logout button to switch accounts
 
@@ -253,7 +253,7 @@ gemini-tutor/
 
 | Requirement | Status | Details |
 |---|---|---|
-| ✅ Gemini model | ✔️ | Gemini 2.0 Flash (Live API) |
+| ✅ Gemini model | ✔️ | Gemini 2.5 Flash Native Audio (Live API) + Gemini 2.5 Flash (vision) |
 | ✅ Google GenAI SDK or ADK | ✔️ | Both — GenAI SDK for Live API + ADK for agent tools |
 | ✅ Google Cloud service | ✔️ | Cloud Run, Vertex AI, Cloud Build, Firestore |
 | ✅ Multimodal input | ✔️ | Voice (audio) + Vision (camera/image) + Text |
@@ -271,14 +271,16 @@ gemini-tutor/
 ## 📝 Findings & Learnings
 
 ### What Worked Well
-- **Gemini Live API** provides remarkably natural real-time conversations with low latency
+- **Gemini Live API** with native audio model provides remarkably natural real-time conversations with low latency
+- **Hybrid vision approach** — using Gemini 2.5 Flash for image analysis and feeding results into the native audio session creates a seamless "sees and speaks" experience
 - **Vision + Voice combo** creates a powerful tutoring experience — students can literally "show" their homework
-- **Socratic method in system prompts** makes the AI an effective teacher, not just an answer machine
+- **Balanced teaching approach** combines guided learning with actual answers — the tutor explains step-by-step AND gives the final answer
 - **ADK tools** provide structured capabilities (practice problems, study plans) beyond free-form conversation
 - **Language selection** ensures the tutor always responds in the student's preferred language
 - **Firestore integration** provides durable, serverless storage for student profiles across sessions
 
 ### Challenges
+- **Native audio model limitations** — the `gemini-2.5-flash-native-audio-latest` model doesn't support direct image input, requiring a hybrid approach with a separate vision model call
 - **Audio format handling** — bridging browser MediaRecorder PCM format to Gemini's expected input required careful sample rate and encoding management
 - **WebSocket lifecycle** — managing the bidirectional bridge between client WebSocket and Gemini Live API session required careful async handling
 - **Interruption handling** — ensuring smooth interruption UX when the student speaks while the tutor is responding
@@ -286,9 +288,9 @@ gemini-tutor/
 ### Future Ideas
 - Real-time whiteboard/drawing for working through math problems visually
 - Progress tracking across sessions with Firestore persistence
-- Multi-language support for international students
 - Integration with curriculum standards (Common Core, etc.)
 - Google OAuth as alternative login method
+- Support for more Gemini model variants as they become available
 
 ---
 

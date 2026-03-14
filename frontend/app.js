@@ -1,5 +1,5 @@
 /* ================================================================
-   GeminiTutor - Main Application Script
+   EduNova - Main Application Script
    Handles WebSocket communication, audio/video capture, and UI
    ================================================================ */
 
@@ -101,7 +101,7 @@
     // ── Initialization ──────────────────────────────────────────
     function init() {
         // Check for existing profile in localStorage
-        const saved = localStorage.getItem("gemini_tutor_profile");
+        const saved = localStorage.getItem("edunova_profile");
         if (saved) {
             try {
                 state.userProfile = JSON.parse(saved);
@@ -161,7 +161,7 @@
             els.sessionLanguage.addEventListener("change", () => {
                 if (state.userProfile) {
                     state.userProfile.language = els.sessionLanguage.value;
-                    localStorage.setItem("gemini_tutor_profile", JSON.stringify(state.userProfile));
+                    localStorage.setItem("edunova_profile", JSON.stringify(state.userProfile));
                 }
             });
         }
@@ -190,7 +190,7 @@
             }
         });
 
-        console.log("GeminiTutor initialized");
+        console.log("EduNova initialized");
     }
 
     // ── Sign-Up ─────────────────────────────────────────────────
@@ -252,7 +252,7 @@
         const localProfile = { ...profile };
         delete localProfile.password;
         state.userProfile = localProfile;
-        localStorage.setItem("gemini_tutor_profile", JSON.stringify(localProfile));
+        localStorage.setItem("edunova_profile", JSON.stringify(localProfile));
 
         applyTheme(profile.gender);
         showToast(`Account created! Welcome, ${profile.name}!`, "success");
@@ -285,7 +285,7 @@
 
             const profile = data.user;
             state.userProfile = profile;
-            localStorage.setItem("gemini_tutor_profile", JSON.stringify(profile));
+            localStorage.setItem("edunova_profile", JSON.stringify(profile));
 
             applyTheme(profile.gender);
             showToast(`Welcome back, ${profile.name}!`, "success");
@@ -298,7 +298,7 @@
     // ── Logout ───────────────────────────────────────────────────
     function handleLogout() {
         state.userProfile = null;
-        localStorage.removeItem("gemini_tutor_profile");
+        localStorage.removeItem("edunova_profile");
         document.body.classList.remove("theme-pink", "theme-blue");
         showScreen("signin");
         showToast("Logged out.", "success");

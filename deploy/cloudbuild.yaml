@@ -1,5 +1,5 @@
 # ============================================================
-# GeminiTutor - Cloud Build Configuration
+# EduNova - Cloud Build Configuration
 # Automated build and deploy pipeline for Google Cloud
 # ============================================================
 
@@ -17,9 +17,9 @@ steps:
     args:
       - "build"
       - "-t"
-      - "gcr.io/$PROJECT_ID/gemini-tutor:$BUILD_ID"
+      - "gcr.io/$PROJECT_ID/edunova:$BUILD_ID"
       - "-t"
-      - "gcr.io/$PROJECT_ID/gemini-tutor:latest"
+      - "gcr.io/$PROJECT_ID/edunova:latest"
       - "-f"
       - "backend/Dockerfile"
       - "backend/"
@@ -28,12 +28,12 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "push"
-      - "gcr.io/$PROJECT_ID/gemini-tutor:$BUILD_ID"
+      - "gcr.io/$PROJECT_ID/edunova:$BUILD_ID"
 
   - name: "gcr.io/cloud-builders/docker"
     args:
       - "push"
-      - "gcr.io/$PROJECT_ID/gemini-tutor:latest"
+      - "gcr.io/$PROJECT_ID/edunova:latest"
 
   # Step 4: Deploy to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -41,9 +41,9 @@ steps:
     args:
       - "run"
       - "deploy"
-      - "gemini-tutor"
+      - "edunova"
       - "--image"
-      - "gcr.io/$PROJECT_ID/gemini-tutor:$BUILD_ID"
+      - "gcr.io/$PROJECT_ID/edunova:$BUILD_ID"
       - "--platform"
       - "managed"
       - "--region"
@@ -75,8 +75,8 @@ options:
 
 # Artifacts
 images:
-  - "gcr.io/$PROJECT_ID/gemini-tutor:$BUILD_ID"
-  - "gcr.io/$PROJECT_ID/gemini-tutor:latest"
+  - "gcr.io/$PROJECT_ID/edunova:$BUILD_ID"
+  - "gcr.io/$PROJECT_ID/edunova:latest"
 
 # Build timeout (15 minutes)
 timeout: "900s"
