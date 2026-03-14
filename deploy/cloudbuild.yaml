@@ -1,0 +1,82 @@
+# ============================================================
+# GeminiTutor - Cloud Build Configuration
+# Automated build and deploy pipeline for Google Cloud
+# ============================================================
+
+steps:
+  # Step 1: Copy frontend files into backend build context
+  - name: "gcr.io/cloud-builders/gsutil"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        cp -r frontend/ backend/frontend/
+
+  # Step 2: Build the Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/gemini-tutor:$BUILD_ID"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/gemini-tutor:latest"
+      - "-f"
+      - "backend/Dockerfile"
+      - "backend/"
+
+  # Step 3: Push the image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "push"
+      - "gcr.io/$PROJECT_ID/gemini-tutor:$BUILD_ID"
+
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "push"
+      - "gcr.io/$PROJECT_ID/gemini-tutor:latest"
+
+  # Step 4: Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "gemini-tutor"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/gemini-tutor:$BUILD_ID"
+      - "--platform"
+      - "managed"
+      - "--region"
+      - "${_REGION}"
+      - "--allow-unauthenticated"
+      - "--port"
+      - "8080"
+      - "--memory"
+      - "1Gi"
+      - "--cpu"
+      - "2"
+      - "--min-instances"
+      - "0"
+      - "--max-instances"
+      - "10"
+      - "--timeout"
+      - "3600"
+      - "--set-env-vars"
+      - "GOOGLE_CLOUD_PROJECT=$PROJECT_ID,GOOGLE_CLOUD_REGION=${_REGION}"
+      - "--session-affinity"
+
+# Substitution variables (can be overridden)
+substitutions:
+  _REGION: "us-central1"
+
+# Build options
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+# Artifacts
+images:
+  - "gcr.io/$PROJECT_ID/gemini-tutor:$BUILD_ID"
+  - "gcr.io/$PROJECT_ID/gemini-tutor:latest"
+
+# Build timeout (15 minutes)
+timeout: "900s"

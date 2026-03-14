@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeminiTutor - AI-Powered Learning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=4">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+</head>
+<body>
+    <!-- ================================================================= -->
+    <!-- SIGN-IN SCREEN                                                    -->
+    <!-- ================================================================= -->
+    <div id="signin" class="screen active">
+        <div class="landing-bg">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <header class="landing-header">
+            <div class="logo">
+                <span class="logo-icon">🎓</span>
+                <span class="logo-text">GeminiTutor</span>
+            </div>
+            <div class="badge">Powered by Gemini Live API</div>
+        </header>
+
+        <main class="signin-main">
+            <h1 class="hero-title">Welcome, Student!</h1>
+            <p class="hero-subtitle">Sign in to continue or create a new account.</p>
+
+            <!-- Tab switcher -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Log In</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="loginForm" class="signin-form" autocomplete="off">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn-start-learning">
+                    <span class="material-icons-round">login</span>
+                    Log In
+                </button>
+            </form>
+
+            <!-- SIGN-UP FORM (hidden by default) -->
+            <form id="signinForm" class="signin-form" autocomplete="off" style="display:none;">
+                <div class="form-group">
+                    <label for="inputUsername">Username</label>
+                    <input type="text" id="inputUsername" placeholder="Choose a username" required minlength="3" maxlength="30">
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" id="inputPassword" placeholder="Choose a password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="inputName">Name</label>
+                    <input type="text" id="inputName" placeholder="Your name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="gender-selector">
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="girl">
+                            <span class="gender-card girl-card">
+                                <span class="gender-emoji">👧</span>
+                                <span>Girl</span>
+                            </span>
+                        </label>
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="boy">
+                            <span class="gender-card boy-card">
+                                <span class="gender-emoji">👦</span>
+                                <span>Boy</span>
+                            </span>
+                        </label>
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="other">
+                            <span class="gender-card other-card">
+                                <span class="gender-emoji">🧑</span>
+                                <span>Other</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="inputGrade">Class / Grade</label>
+                        <select id="inputGrade" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="1">Class 1</option>
+                            <option value="2">Class 2</option>
+                            <option value="3">Class 3</option>
+                            <option value="4">Class 4</option>
+                            <option value="5">Class 5</option>
+                            <option value="6">Class 6</option>
+                            <option value="7">Class 7</option>
+                            <option value="8">Class 8</option>
+                            <option value="9">Class 9</option>
+                            <option value="10">Class 10</option>
+                            <option value="11">Class 11</option>
+                            <option value="12">Class 12</option>
+                            <option value="ug">Undergraduate</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAge">Age</label>
+                        <input type="number" id="inputAge" placeholder="Age" min="5" max="99" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputLanguage">Preferred Language</label>
+                    <select id="inputLanguage" required>
+                        <option value="en" selected>English</option>
+                        <option value="hi">Hindi (हिन्दी)</option>
+                        <option value="es">Spanish (Español)</option>
+                        <option value="fr">French (Français)</option>
+                        <option value="de">German (Deutsch)</option>
+                        <option value="ja">Japanese (日本語)</option>
+                        <option value="ko">Korean (한국어)</option>
+                        <option value="zh">Chinese (中文)</option>
+                        <option value="pt">Portuguese (Português)</option>
+                        <option value="ar">Arabic (العربية)</option>
+                        <option value="bn">Bengali (বাংলা)</option>
+                        <option value="ta">Tamil (தமிழ்)</option>
+                        <option value="te">Telugu (తెలుగు)</option>
+                        <option value="mr">Marathi (मराठी)</option>
+                        <option value="gu">Gujarati (ગુજરાતી)</option>
+                        <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                        <option value="ml">Malayalam (മലയാളം)</option>
+                        <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+                        <option value="ru">Russian (Русский)</option>
+                        <option value="it">Italian (Italiano)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-start-learning">
+                    <span class="material-icons-round">rocket_launch</span>
+                    Create Account
+                </button>
+            </form>
+        </main>
+
+        <footer class="landing-footer">
+            <p>Built with Google Gemini Live API · ADK · Google Cloud</p>
+        </footer>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- LANDING / SUBJECT SELECTION                                       -->
+    <!-- ================================================================= -->
+    <div id="landing" class="screen">
+        <div class="landing-bg">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+
+        <header class="landing-header">
+            <div class="logo">
+                <span class="logo-icon">🎓</span>
+                <span class="logo-text">GeminiTutor</span>
+            </div>
+            <div class="header-right">
+                <div class="badge">Powered by Gemini Live API</div>
+                <button id="btnLogout" class="btn-logout" title="Log out">
+                    <span class="material-icons-round">logout</span>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="landing-main">
+            <h1 class="hero-title">
+                Your AI Tutor That<br>
+                <span class="gradient-text">Sees & Speaks</span>
+            </h1>
+            <p class="hero-subtitle">
+                Talk naturally, show your homework, get step-by-step guidance.
+                Real-time voice + vision tutoring powered by Google Gemini.
+            </p>
+
+            <div class="language-bar">
+                <label for="sessionLanguage" class="lang-label">
+                    <span class="material-icons-round">language</span>
+                    Language:
+                </label>
+                <select id="sessionLanguage" class="lang-select">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi (हिन्दी)</option>
+                    <option value="es">Spanish (Español)</option>
+                    <option value="fr">French (Français)</option>
+                    <option value="de">German (Deutsch)</option>
+                    <option value="ja">Japanese (日本語)</option>
+                    <option value="ko">Korean (한국어)</option>
+                    <option value="zh">Chinese (中文)</option>
+                    <option value="pt">Portuguese (Português)</option>
+                    <option value="ar">Arabic (العربية)</option>
+                    <option value="bn">Bengali (বাংলা)</option>
+                    <option value="ta">Tamil (தமிழ்)</option>
+                    <option value="te">Telugu (తెలుగు)</option>
+                    <option value="mr">Marathi (मराठी)</option>
+                    <option value="gu">Gujarati (ગુજરાતી)</option>
+                    <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                    <option value="ml">Malayalam (മലയാളം)</option>
+                    <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+                    <option value="ru">Russian (Русский)</option>
+                    <option value="it">Italian (Italiano)</option>
+                </select>
+            </div>
+
+            <div class="subject-grid" id="subjectGrid">
+                <button class="subject-card" data-subject="mathematics">
+                    <span class="subject-icon">📐</span>
+                    <span class="subject-name">Mathematics</span>
+                    <span class="subject-desc">Algebra, Calculus, Geometry</span>
+                </button>
+                <button class="subject-card" data-subject="physics">
+                    <span class="subject-icon">⚛️</span>
+                    <span class="subject-name">Physics</span>
+                    <span class="subject-desc">Mechanics, Waves, Energy</span>
+                </button>
+                <button class="subject-card" data-subject="chemistry">
+                    <span class="subject-icon">🧪</span>
+                    <span class="subject-name">Chemistry</span>
+                    <span class="subject-desc">Reactions, Bonding, Organic</span>
+                </button>
+                <button class="subject-card" data-subject="biology">
+                    <span class="subject-icon">🧬</span>
+                    <span class="subject-name">Biology</span>
+                    <span class="subject-desc">Cells, Genetics, Ecology</span>
+                </button>
+                <button class="subject-card" data-subject="computer_science">
+                    <span class="subject-icon">💻</span>
+                    <span class="subject-name">Computer Science</span>
+                    <span class="subject-desc">Programming, Algorithms</span>
+                </button>
+                <button class="subject-card" data-subject="language_arts">
+                    <span class="subject-icon">📝</span>
+                    <span class="subject-name">Language Arts</span>
+                    <span class="subject-desc">Grammar, Writing, Literature</span>
+                </button>
+                <button class="subject-card" data-subject="history">
+                    <span class="subject-icon">📜</span>
+                    <span class="subject-name">History</span>
+                    <span class="subject-desc">World History, Civics</span>
+                </button>
+                <button class="subject-card" data-subject="general">
+                    <span class="subject-icon">📚</span>
+                    <span class="subject-name">General</span>
+                    <span class="subject-desc">Any subject or topic</span>
+                </button>
+            </div>
+        </main>
+
+        <footer class="landing-footer">
+            <p>Built with Google Gemini Live API · ADK · Google Cloud Run</p>
+        </footer>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TUTORING SESSION                                                   -->
+    <!-- ================================================================= -->
+    <div id="session" class="screen">
+        <div class="session-bg">
+            <div class="gradient-orb orb-session-1"></div>
+            <div class="gradient-orb orb-session-2"></div>
+        </div>
+
+        <!-- Top Bar -->
+        <header class="session-header">
+            <button id="btnBack" class="icon-btn" title="End Session">
+                <span class="material-icons-round">arrow_back</span>
+            </button>
+            <div class="session-info">
+                <span class="session-subject" id="sessionSubject">Mathematics</span>
+                <span class="session-status" id="sessionStatus">
+                    <span class="status-dot"></span>
+                    Connecting...
+                </span>
+            </div>
+            <div class="session-timer" id="sessionTimer">00:00</div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="session-content">
+            <!-- Chat / Transcript Area -->
+            <div class="chat-area" id="chatArea">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Camera Preview (hidden by default) -->
+            <div class="camera-preview" id="cameraPreview" style="display: none;">
+                <video id="cameraVideo" autoplay playsinline muted></video>
+                <div class="camera-controls">
+                    <button id="btnCapture" class="capture-btn" title="Capture & Send">
+                        <span class="material-icons-round">photo_camera</span>
+                    </button>
+                    <button id="btnCloseCamera" class="icon-btn-sm" title="Close Camera">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Image Preview (when captured/uploaded) -->
+            <div class="image-preview" id="imagePreview" style="display: none;">
+                <img id="previewImage" src="" alt="Captured homework">
+                <div class="image-preview-actions">
+                    <button id="btnSendImage" class="btn-primary btn-sm">
+                        <span class="material-icons-round">send</span> Send to Tutor
+                    </button>
+                    <button id="btnDiscardImage" class="icon-btn-sm" title="Discard">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="session-controls">
+            <!-- Text Input -->
+            <div class="text-input-area">
+                <input type="text" id="textInput" placeholder="Type a message..." autocomplete="off">
+                <button id="btnSendText" class="icon-btn-sm" title="Send">
+                    <span class="material-icons-round">send</span>
+                </button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="btnMic" class="action-btn mic-btn" title="Hold to Talk">
+                    <span class="material-icons-round">mic</span>
+                    <span class="btn-label">Talk</span>
+                </button>
+                <button id="btnCamera" class="action-btn" title="Show Homework">
+                    <span class="material-icons-round">photo_camera</span>
+                    <span class="btn-label">Camera</span>
+                </button>
+                <button id="btnUpload" class="action-btn" title="Upload Image">
+                    <span class="material-icons-round">upload_file</span>
+                    <span class="btn-label">Upload</span>
+                </button>
+                <button id="btnEndSession" class="action-btn end-btn" title="End Session">
+                    <span class="material-icons-round">call_end</span>
+                    <span class="btn-label">End</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Hidden file input for image upload -->
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        <!-- Hidden canvas for camera capture -->
+        <canvas id="captureCanvas" style="display: none;"></canvas>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TOAST NOTIFICATIONS                                                -->
+    <!-- ================================================================= -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="/static/app.js?v=4"></script>
+</body>
+</html>
