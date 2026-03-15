@@ -46,3 +46,6 @@ node_modules/
 # Misc
 *.bak
 *.tmp
+
+# Non-code assets (video scripts, pitch deck, blog, generated videos)
+extras/
