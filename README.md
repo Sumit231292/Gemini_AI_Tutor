@@ -99,8 +99,8 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/edunova.git
-cd edunova
+git clone https://github.com/Sumit231292/Gemini_AI_Tutor.git
+cd Gemini_AI_Tutor
 ```
 
 ### 2. Set Up Environment
