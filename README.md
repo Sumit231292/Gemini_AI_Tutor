@@ -188,7 +188,7 @@ gcloud builds submit \
     --substitutions _REGION=us-central1
 ```
 
-### Option C: Terraform (IaC — Bonus Points!)
+### Option C: Terraform
 
 ```bash
 cd deploy
